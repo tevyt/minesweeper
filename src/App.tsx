@@ -1,18 +1,11 @@
 import React from "react";
 import GameBoard from "./components/game-board/GameBoard";
 
+import "./App.scss";
+
 const App: React.FunctionComponent<{}> = () => {
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        width: "100%",
-        backgroundColor: "black"
-      }}
-    >
+    <div className="app">
       <GameBoard />
     </div>
   );
