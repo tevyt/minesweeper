@@ -5,22 +5,23 @@ export type MineSquareState = "hidden" | "revealed" | "flagged";
 export interface IMineSquareProps {
   onRevealClick: () => void;
   onFlagClick: () => void;
-  value: "mine" | number;
+  value: number;
   state: MineSquareState;
+  isMine: boolean;
 }
 
 const MineSquare: React.FunctionComponent<IMineSquareProps> = ({
   onRevealClick,
   onFlagClick,
   value,
-  state
+  state,
+  isMine
 }) => {
   const displayValue = () => {
-    if (value === "mine") {
+    if (isMine) {
       return "*";
-    } else {
-      return value;
     }
+    return value;
   };
 
   const handleFlagClick = (e: React.MouseEvent) => {
