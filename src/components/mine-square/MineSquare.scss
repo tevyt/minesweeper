@@ -6,8 +6,10 @@
   justify-content: center;
   align-items: center;
   border: 1px solid black;
+  cursor: pointer;
   &-revealed {
     background-color: white;
+    cursor: auto;
   }
   &-value[data-value="0"] {
     color: #ff0004;
