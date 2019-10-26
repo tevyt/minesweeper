@@ -3,7 +3,8 @@ import MineSquare from "./components/MineSquare";
 import prepareGame from "./utils/prepare-game";
 
 const App: React.FC = () => {
-  const mineFieldModel = prepareGame(10, 8, 10);
+  const [gameField, setGameField] = React.useState(prepareGame(10, 8, 10));
+
   return (
     <div
       style={{
@@ -14,14 +15,15 @@ const App: React.FC = () => {
       }}
     >
       <div>
-        {mineFieldModel.map(row => {
+        {gameField.map(row => {
           return (
             <div style={{ display: "flex" }}>
               {row.map(square => (
                 <MineSquare
                   isMine={square.isMine}
                   value={square.value}
-                  state="revealed"
+                  isRevealed={square.isRevealed}
+                  isFlagged={square.isFlagged}
                   onRevealClick={() => null}
                   onFlagClick={() => null}
                 />

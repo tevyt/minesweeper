@@ -1,5 +1,4 @@
 import { IMineSquare } from "./mine-square";
-import { mixedTypeAnnotation } from "@babel/types";
 
 const prepareGame: (
   numberOfRows: number,
@@ -10,7 +9,12 @@ const prepareGame: (
   for (let row = 0; row < numberOfRows; row++) {
     const mineRow: IMineSquare[] = [];
     for (let column = 0; column < numberOfColumns; column++) {
-      mineRow.push({ value: 0, isMine: false });
+      mineRow.push({
+        value: 0,
+        isMine: false,
+        isRevealed: false,
+        isFlagged: false
+      });
     }
     mineFiled.push(mineRow);
   }

@@ -6,20 +6,25 @@ export interface IMineSquareProps {
   onRevealClick: () => void;
   onFlagClick: () => void;
   value: number;
-  state: MineSquareState;
   isMine: boolean;
+  isRevealed: boolean;
+  isFlagged: boolean;
 }
 
 const MineSquare: React.FunctionComponent<IMineSquareProps> = ({
   onRevealClick,
   onFlagClick,
   value,
-  state,
+  isRevealed,
+  isFlagged,
   isMine
 }) => {
   const displayValue = () => {
     if (isMine) {
       return "*";
+    }
+    if (isFlagged) {
+      return "F";
     }
     return value;
   };
@@ -40,8 +45,7 @@ const MineSquare: React.FunctionComponent<IMineSquareProps> = ({
       onContextMenu={handleFlagClick}
       onClick={onRevealClick}
     >
-      {state === "revealed" && <div>{displayValue()}</div>}
-      {state === "flagged" && <div>F</div>}
+      {isRevealed || (isFlagged && <div>{displayValue()}</div>)}
     </div>
   );
 };
