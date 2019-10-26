@@ -12,6 +12,13 @@ import {
   hasLeftCell,
   hasUpLeftCell
 } from "./utils/mine-square";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFlag,
+  faUndo,
+  faRecycle,
+  faRedo
+} from "@fortawesome/free-solid-svg-icons";
 
 const App: React.FC = () => {
   const [gameField, setGameField] = React.useState<IMineSquare[][]>([]);
@@ -205,6 +212,35 @@ const App: React.FC = () => {
     };
   };
 
+  const [flagsRemaining, setFlagsRemaining] = React.useState(NUMBER_OF_MINES);
+
+  const handleFlagClick = (row: number, column: number) => {
+    return () => {
+      if (gameField[row][column].isRevealed) {
+        return;
+      }
+      if (gameField[row][column].isFlagged) {
+        gameField[row][column].isFlagged = false;
+        setFlagsRemaining(flagsRemaining + 1);
+      } else {
+        if (flagsRemaining === 0) {
+          return;
+        }
+        gameField[row][column].isFlagged = true;
+        setFlagsRemaining(flagsRemaining - 1);
+      }
+      const newField = gameField.map(row => row.slice());
+      setGameField(newField);
+    };
+  };
+
+  const handleRefreshClick = () => {
+    setGameField(
+      prepareGame(NUMBER_OF_ROWS, NUMBER_OF_COLUMNS, NUMBER_OF_MINES)
+    );
+    setFlagsRemaining(NUMBER_OF_MINES);
+  };
+
   return (
     <div
       style={{
@@ -212,10 +248,32 @@ const App: React.FC = () => {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
+        width: "100%",
         backgroundColor: "black"
       }}
     >
-      <div>
+      <div className="game-board">
+        <div
+          className="game-board-controls"
+          style={{
+            backgroundColor: "green",
+            border: "1px solid black",
+            padding: "10px",
+            display: "flex",
+            justifyContent: "space-between"
+          }}
+        >
+          <div
+            className="game-board-controls-refresh"
+            style={{ cursor: "pointer" }}
+          >
+            <FontAwesomeIcon icon={faRedo} onClick={handleRefreshClick} />
+          </div>
+          <div className="game-board-controls-flags">
+            <FontAwesomeIcon icon={faFlag} />
+            <span>{flagsRemaining}</span>
+          </div>
+        </div>
         {gameField.map((row, rowIndex) => {
           return (
             <div style={{ display: "flex" }} key={rowIndex}>
@@ -227,7 +285,7 @@ const App: React.FC = () => {
                   isRevealed={square.isRevealed}
                   isFlagged={square.isFlagged}
                   onRevealClick={handleRevealClick(rowIndex, columnIndex)}
-                  onFlagClick={() => null}
+                  onFlagClick={handleFlagClick(rowIndex, columnIndex)}
                 />
               ))}
             </div>

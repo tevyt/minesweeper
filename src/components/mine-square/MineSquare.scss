@@ -38,4 +38,9 @@
   &-value[data-value="8"] {
     color: #ffaa00;
   }
+  &-value {
+    &-flagged {
+      color: black;
+    }
+  }
 }
