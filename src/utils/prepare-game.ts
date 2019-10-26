@@ -1,4 +1,14 @@
-import { IMineSquare } from "./mine-square";
+import {
+  IMineSquare,
+  hasUpRightCell,
+  hasUpCell,
+  hasRightCell,
+  hasDownRightCell,
+  hasDownCell,
+  hasDownLeftCell,
+  hasLeftCell,
+  hasUpLeftCell
+} from "./mine-square";
 
 const prepareGame: (
   numberOfRows: number,
@@ -33,48 +43,37 @@ const prepareGame: (
 
   for (let row = 0; row < numberOfRows; row++) {
     for (let column = 0; column < numberOfColumns; column++) {
+      const cell = { row, column, numberOfColumns, numberOfRows };
       //Up
-      if (row > 0 && mineFiled[row - 1][column].isMine) {
+      if (hasUpCell(cell) && mineFiled[row - 1][column].isMine) {
         mineFiled[row][column].value += 1;
       }
       //Up-Right
-      if (
-        row > 0 &&
-        column < numberOfColumns - 1 &&
-        mineFiled[row - 1][column + 1].isMine
-      ) {
+      if (hasUpRightCell(cell) && mineFiled[row - 1][column + 1].isMine) {
         mineFiled[row][column].value += 1;
       }
       //Right
-      if (column < numberOfColumns - 1 && mineFiled[row][column + 1].isMine) {
+      if (hasRightCell(cell) && mineFiled[row][column + 1].isMine) {
         mineFiled[row][column].value += 1;
       }
       //Down-Right
-      if (
-        row < numberOfRows - 1 &&
-        column < numberOfColumns - 1 &&
-        mineFiled[row + 1][column + 1].isMine
-      ) {
+      if (hasDownRightCell(cell) && mineFiled[row + 1][column + 1].isMine) {
         mineFiled[row][column].value += 1;
       }
       //Down
-      if (row < numberOfRows - 1 && mineFiled[row + 1][column].isMine) {
+      if (hasDownCell(cell) && mineFiled[row + 1][column].isMine) {
         mineFiled[row][column].value += 1;
       }
       //Down-Left
-      if (
-        row < numberOfRows - 1 &&
-        column > 0 &&
-        mineFiled[row + 1][column - 1].isMine
-      ) {
+      if (hasDownLeftCell(cell) && mineFiled[row + 1][column - 1].isMine) {
         mineFiled[row][column].value += 1;
       }
       //Left
-      if (column > 0 && mineFiled[row][column - 1].isMine) {
+      if (hasLeftCell(cell) && mineFiled[row][column - 1].isMine) {
         mineFiled[row][column].value += 1;
       }
       //Up-Left
-      if (row > 0 && column > 0 && mineFiled[row - 1][column - 1].isMine) {
+      if (hasUpLeftCell(cell) && mineFiled[row - 1][column - 1].isMine) {
         mineFiled[row][column].value += 1;
       }
     }
