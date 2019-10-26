@@ -1,5 +1,5 @@
 import React from "react";
-import MineSquare from "./components/MineSquare";
+import MineSquare from "./components/mine-square/MineSquare";
 import prepareGame from "./utils/prepare-game";
 import {
   IMineSquare,
@@ -211,7 +211,8 @@ const App: React.FC = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "100vh"
+        height: "100vh",
+        backgroundColor: "black"
       }}
     >
       <div>

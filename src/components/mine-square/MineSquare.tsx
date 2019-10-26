@@ -1,5 +1,7 @@
 import React from "react";
 
+import "./MineSquare.scss";
+
 export interface IMineSquareProps {
   onRevealClick: () => void;
   onFlagClick: () => void;
@@ -34,16 +36,15 @@ const MineSquare: React.FunctionComponent<IMineSquareProps> = ({
 
   return (
     <div
-      style={{
-        backgroundColor: "green",
-        height: "40px",
-        width: "40px",
-        border: "1px solid white"
-      }}
+      className={`mine-square ${isRevealed && "mine-square-revealed"}`}
       onContextMenu={handleFlagClick}
       onClick={onRevealClick}
     >
-      {(isRevealed || isFlagged) && <div>{displayValue()}</div>}
+      {(isRevealed || isFlagged) && (
+        <div className="mine-square-value" data-value={value}>
+          {displayValue()}
+        </div>
+      )}
     </div>
   );
 };
