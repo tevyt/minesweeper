@@ -1,7 +1,5 @@
 import React from "react";
 
-export type MineSquareState = "hidden" | "revealed" | "flagged";
-
 export interface IMineSquareProps {
   onRevealClick: () => void;
   onFlagClick: () => void;
@@ -45,7 +43,7 @@ const MineSquare: React.FunctionComponent<IMineSquareProps> = ({
       onContextMenu={handleFlagClick}
       onClick={onRevealClick}
     >
-      {isRevealed || (isFlagged && <div>{displayValue()}</div>)}
+      {(isRevealed || isFlagged) && <div>{displayValue()}</div>}
     </div>
   );
 };
