@@ -10,9 +10,6 @@
   &-revealed {
     background-color: white;
   }
-  &-value[data-value="0"] {
-    color: #ff0004;
-  }
   &-value[data-value="1"] {
     color: #ff00aa;
   }
@@ -40,6 +37,9 @@
   &-value {
     &-flagged {
       color: black;
+    }
+    &-bomb {
+      color: red;
     }
   }
 }

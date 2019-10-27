@@ -9,7 +9,7 @@ const App: React.FunctionComponent<{}> = () => {
     <div className="app">
       <div className="app-header">
         <a href="https://travisalexandersmith.me">
-          <img src={symbol} />
+          <img src={symbol} alt="Green Phoenix Logo" />
         </a>
       </div>
       <div className="app-body">

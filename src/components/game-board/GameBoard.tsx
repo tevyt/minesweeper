@@ -170,18 +170,6 @@ const GameBoard: React.FunctionComponent<{}> = () => {
   const [hasLost, setHasLost] = React.useState(false);
   const [hasWon, setHasWon] = React.useState(false);
 
-  const allMinesAreFlagged = () => {
-    const squares = gameField.flat();
-    const mineSquares = squares.filter(square => square.isMine);
-    return mineSquares.every(square => square.isFlagged);
-  };
-  const areAllNonMinesRevealed = () => {
-    const squares = gameField.flat();
-    const nonMineSquares = squares.filter(square => !square.isMine);
-
-    return nonMineSquares.every(square => square.isRevealed);
-  };
-
   const reveal = (
     grid: IMineSquare[][],
     row: number,
@@ -342,6 +330,18 @@ const GameBoard: React.FunctionComponent<{}> = () => {
   };
 
   React.useEffect(() => {
+    const allMinesAreFlagged = () => {
+      const squares = gameField.flat();
+      const mineSquares = squares.filter(square => square.isMine);
+      return mineSquares.every(square => square.isFlagged);
+    };
+    const areAllNonMinesRevealed = () => {
+      const squares = gameField.flat();
+      const nonMineSquares = squares.filter(square => !square.isMine);
+
+      return nonMineSquares.every(square => square.isRevealed);
+    };
+
     if (
       gameField.length > 0 &&
       (areAllNonMinesRevealed() || allMinesAreFlagged())
