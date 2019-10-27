@@ -14,6 +14,12 @@
     &-refresh {
       cursor: pointer;
     }
+    select {
+      background: black;
+      color: $primary;
+      font-weight: bold;
+      border: none;
+    }
   }
   &-message {
     text-align: center;

@@ -5,6 +5,7 @@ import { faFlag, faRedo } from "@fortawesome/free-solid-svg-icons";
 import { IMineSquare } from "../../utils/mine-square";
 
 import "./GameBoard.scss";
+import { gameDifficulty } from "../../types/game-difficulty";
 
 interface IGameBoardViewProps {
   onRefeshClick: () => void;
@@ -13,6 +14,8 @@ interface IGameBoardViewProps {
   onRevealClick: (row: number, column: number) => () => void;
   onFlagClick: (row: number, column: number) => () => void;
   onRevealedDoubleClick: (row: number, column: number) => () => void;
+  onDifficultyChange: (difficulty: gameDifficulty) => void;
+  difficulty: gameDifficulty;
   hasLost: boolean;
   hasWon: boolean;
   time: number;
@@ -31,10 +34,16 @@ const GameBoardView: React.FunctionComponent<IGameBoardViewProps> = ({
   onRevealClick,
   onFlagClick,
   onRevealedDoubleClick,
+  onDifficultyChange,
+  difficulty,
   hasLost,
   hasWon,
   time
 }) => {
+  const handleDifficultyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log(e.target.value);
+    onDifficultyChange(e.target.value as gameDifficulty);
+  };
   return (
     <div className="game-board">
       {hasLost && (
@@ -52,6 +61,11 @@ const GameBoardView: React.FunctionComponent<IGameBoardViewProps> = ({
         <div className="game-board-controls-refresh">
           <FontAwesomeIcon icon={faRedo} onClick={onRefeshClick} />
         </div>
+        <select value={difficulty} onChange={handleDifficultyChange}>
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+        </select>
         <div className="game-board-controls-time">{time}</div>
         <div className="game-board-controls-flag">
           <FontAwesomeIcon icon={faFlag} />

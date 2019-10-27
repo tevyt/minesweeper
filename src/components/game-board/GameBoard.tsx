@@ -12,20 +12,25 @@ import {
   hasUpLeftCell
 } from "../../utils/mine-square";
 import GameBoardView from "./GameBoardView";
+import { gameDifficulty } from "../../types/game-difficulty";
 
 const GameBoard: React.FunctionComponent<{}> = () => {
   const [gameField, setGameField] = React.useState<IMineSquare[][]>([]);
 
   //prepare gameboard when component first renders
-  const NUMBER_OF_ROWS = 10;
-  const NUMBER_OF_COLUMNS = 8;
-  const NUMBER_OF_MINES = 10;
+  const [numberOfRows, setNumberOfRows] = React.useState(10);
+  const [numberOfColumns, setNumberOfColumns] = React.useState(8);
+  const [numberOfMines, setNumberOfMines] = React.useState(10);
+  const [flagsRemaining, setFlagsRemaining] = React.useState(numberOfMines);
+  const [difficulty, setDifficulty] = React.useState<gameDifficulty>("easy");
 
   React.useEffect(() => {
-    setGameField(
-      prepareGame(NUMBER_OF_ROWS, NUMBER_OF_COLUMNS, NUMBER_OF_MINES)
-    );
-  }, []);
+    setGameField(prepareGame(numberOfRows, numberOfColumns, numberOfMines));
+    setTime(0);
+    setHasWon(false);
+    setHasLost(false);
+    setFlagsRemaining(numberOfMines);
+  }, [numberOfRows, numberOfColumns, numberOfMines, difficulty]);
 
   const revealAdjacentCells: (
     grid: IMineSquare[][],
@@ -39,8 +44,8 @@ const GameBoard: React.FunctionComponent<{}> = () => {
     const cell = {
       row,
       column,
-      numberOfRows: NUMBER_OF_ROWS,
-      numberOfColumns: NUMBER_OF_COLUMNS
+      numberOfRows,
+      numberOfColumns
     };
 
     let newGrid: IMineSquare[][] = grid.map(row => row.slice());
@@ -211,8 +216,6 @@ const GameBoard: React.FunctionComponent<{}> = () => {
     };
   };
 
-  const [flagsRemaining, setFlagsRemaining] = React.useState(NUMBER_OF_MINES);
-
   const handleFlagClick = (row: number, column: number) => {
     return () => {
       if (hasWon || hasLost) {
@@ -246,8 +249,8 @@ const GameBoard: React.FunctionComponent<{}> = () => {
       const cell = {
         row,
         column,
-        numberOfRows: NUMBER_OF_ROWS,
-        numberOfColumns: NUMBER_OF_COLUMNS
+        numberOfRows,
+        numberOfColumns
       };
 
       if (hasUpCell(cell)) {
@@ -323,10 +326,8 @@ const GameBoard: React.FunctionComponent<{}> = () => {
 
   const handleRefreshClick = () => {
     setTime(0);
-    setGameField(
-      prepareGame(NUMBER_OF_ROWS, NUMBER_OF_COLUMNS, NUMBER_OF_MINES)
-    );
-    setFlagsRemaining(NUMBER_OF_MINES);
+    setGameField(prepareGame(numberOfRows, numberOfColumns, numberOfMines));
+    setFlagsRemaining(numberOfMines);
     setHasLost(false);
     setHasWon(false);
   };
@@ -367,6 +368,27 @@ const GameBoard: React.FunctionComponent<{}> = () => {
     };
   }, [hasWon, hasLost, time]);
 
+  const handleDifficultyChange = (difficulty: gameDifficulty) => {
+    setDifficulty(difficulty);
+    switch (difficulty) {
+      case "easy":
+        setNumberOfRows(10);
+        setNumberOfColumns(8);
+        setNumberOfMines(10);
+        break;
+      case "medium":
+        setNumberOfRows(18);
+        setNumberOfColumns(14);
+        setNumberOfMines(40);
+        break;
+      case "hard":
+        setNumberOfRows(20);
+        setNumberOfColumns(24);
+        setNumberOfMines(99);
+        break;
+    }
+  };
+
   return (
     <React.Fragment>
       <GameBoardView
@@ -375,6 +397,8 @@ const GameBoard: React.FunctionComponent<{}> = () => {
         onRefeshClick={handleRefreshClick}
         onRevealClick={handleRevealClick}
         onRevealedDoubleClick={handleRevealedDoubleClick}
+        onDifficultyChange={handleDifficultyChange}
+        difficulty={difficulty}
         flagsRemaining={flagsRemaining}
         hasLost={hasLost}
         hasWon={hasWon}
