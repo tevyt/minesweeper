@@ -46,4 +46,18 @@
       }
     }
   }
+  &-row[data-difficulty="hard"] {
+    div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 34px;
+      height: 34px;
+      @media screen and (max-width: 414px) {
+        width: 12px;
+        height: 12px;
+        font-size: 0.75em;
+      }
+    }
+  }
 }
