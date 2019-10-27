@@ -1,0 +1,15 @@
+.game-board {
+  &-controls {
+    background-color: #18624a;
+    border: 1px solid black;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    &-refresh {
+      cursor: pointer;
+    }
+  }
+  &-row {
+    display: flex;
+  }
+}

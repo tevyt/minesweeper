@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFlag, faRedo } from "@fortawesome/free-solid-svg-icons";
 import { IMineSquare } from "../../utils/mine-square";
 
+import "./GameBoard.scss";
+
 interface IGameBoardViewProps {
   onRefeshClick: () => void;
   flagsRemaining: number;
@@ -21,30 +23,18 @@ const GameBoardView: React.FunctionComponent<IGameBoardViewProps> = ({
 }) => {
   return (
     <div className="game-board">
-      <div
-        className="game-board-controls"
-        style={{
-          backgroundColor: "green",
-          border: "1px solid black",
-          padding: "10px",
-          display: "flex",
-          justifyContent: "space-between"
-        }}
-      >
-        <div
-          className="game-board-controls-refresh"
-          style={{ cursor: "pointer" }}
-        >
+      <div className="game-board-controls">
+        <div className="game-board-controls-refresh">
           <FontAwesomeIcon icon={faRedo} onClick={onRefeshClick} />
         </div>
-        <div className="game-board-controls-flags">
+        <div className="game-board-controls-flag">
           <FontAwesomeIcon icon={faFlag} />
           <span>{flagsRemaining}</span>
         </div>
       </div>
       {gameField.map((row, rowIndex) => {
         return (
-          <div style={{ display: "flex" }} key={rowIndex}>
+          <div className="game-board-row" key={rowIndex}>
             {row.map((square, columnIndex) => (
               <MineSquare
                 key={`${rowIndex}-${columnIndex}`}
