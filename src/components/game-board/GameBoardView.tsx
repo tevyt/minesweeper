@@ -12,6 +12,7 @@ interface IGameBoardViewProps {
   gameField: IMineSquare[][];
   onRevealClick: (row: number, column: number) => () => void;
   onFlagClick: (row: number, column: number) => () => void;
+  onRevealedDoubleClick: (row: number, column: number) => () => void;
   hasLost: boolean;
   hasWon: boolean;
 }
@@ -22,6 +23,7 @@ const GameBoardView: React.FunctionComponent<IGameBoardViewProps> = ({
   gameField,
   onRevealClick,
   onFlagClick,
+  onRevealedDoubleClick,
   hasLost,
   hasWon
 }) => {
@@ -54,6 +56,10 @@ const GameBoardView: React.FunctionComponent<IGameBoardViewProps> = ({
                 isFlagged={square.isFlagged}
                 onRevealClick={onRevealClick(rowIndex, columnIndex)}
                 onFlagClick={onFlagClick(rowIndex, columnIndex)}
+                onRevealedDoubleClick={onRevealedDoubleClick(
+                  rowIndex,
+                  columnIndex
+                )}
               />
             ))}
           </div>

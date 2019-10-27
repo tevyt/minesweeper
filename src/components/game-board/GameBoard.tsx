@@ -1,5 +1,4 @@
 import React from "react";
-import MineSquare from "../mine-square/MineSquare";
 import prepareGame from "../../utils/prepare-game";
 import {
   IMineSquare,
@@ -12,8 +11,6 @@ import {
   hasLeftCell,
   hasUpLeftCell
 } from "../../utils/mine-square";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFlag, faRedo } from "@fortawesome/free-solid-svg-icons";
 import GameBoardView from "./GameBoardView";
 
 const GameBoard: React.FunctionComponent<{}> = () => {
@@ -202,11 +199,6 @@ const GameBoard: React.FunctionComponent<{}> = () => {
       return newGrid;
     }
 
-    if (areAllNonMinesRevealed()) {
-      setHasWon(true);
-      return newGrid;
-    }
-
     if (grid[row][column].value === 0) {
       return revealAdjacentCells(newGrid, row, column);
     }
@@ -253,9 +245,89 @@ const GameBoard: React.FunctionComponent<{}> = () => {
       }
       const newField = gameField.map(row => row.slice());
       setGameField(newField);
+    };
+  };
 
-      if (allMinesAreFlagged()) {
-        setHasWon(true);
+  const handleRevealedDoubleClick = (row: number, column: number) => {
+    return () => {
+      if (hasLost || hasWon) {
+        return;
+      }
+      const adjacentSquares: IMineSquare[] = [];
+      const cell = {
+        row,
+        column,
+        numberOfRows: NUMBER_OF_ROWS,
+        numberOfColumns: NUMBER_OF_COLUMNS
+      };
+
+      if (hasUpCell(cell)) {
+        adjacentSquares.push(gameField[row - 1][column]);
+      }
+
+      if (hasUpRightCell(cell)) {
+        adjacentSquares.push(gameField[row - 1][column + 1]);
+      }
+
+      if (hasRightCell(cell)) {
+        adjacentSquares.push(gameField[row][column + 1]);
+      }
+
+      if (hasDownRightCell(cell)) {
+        adjacentSquares.push(gameField[row + 1][column + 1]);
+      }
+
+      if (hasDownCell(cell)) {
+        adjacentSquares.push(gameField[row + 1][column]);
+      }
+
+      if (hasDownLeftCell(cell)) {
+        adjacentSquares.push(gameField[row + 1][column - 1]);
+      }
+
+      if (hasLeftCell(cell)) {
+        adjacentSquares.push(gameField[row][column - 1]);
+      }
+
+      if (hasUpLeftCell(cell)) {
+        adjacentSquares.push(gameField[row - 1][column - 1]);
+      }
+
+      const allSurroundingSquaresAreFlaggedCorrectly = adjacentSquares.every(
+        square => {
+          //If square is flagged it must be a mine.
+          if (square.isFlagged) {
+            return square.isMine;
+          }
+          //If it is not flagged it must not be a mine.
+          return !square.isMine;
+        }
+      );
+
+      if (allSurroundingSquaresAreFlaggedCorrectly) {
+        const newGrid = revealAdjacentCells(gameField, row, column);
+        setGameField(newGrid);
+      } else {
+        const numberOfSurroundingFlaggedSquares = adjacentSquares.filter(
+          square => square.isFlagged
+        ).length;
+        const anyAdjacentSquaresMines = adjacentSquares.some(
+          square => square.isMine
+        );
+
+        if (
+          numberOfSurroundingFlaggedSquares === gameField[row][column].value &&
+          anyAdjacentSquaresMines
+        ) {
+          const adjacentMines = adjacentSquares.filter(square => square.isMine);
+          adjacentMines.forEach(square => {
+            if (!square.isFlagged) {
+              square.isRevealed = true;
+            }
+          });
+          setHasLost(true);
+          setGameField(gameField.map(row => row.slice()));
+        }
       }
     };
   };
@@ -269,6 +341,14 @@ const GameBoard: React.FunctionComponent<{}> = () => {
     setHasWon(false);
   };
 
+  React.useEffect(() => {
+    if (
+      gameField.length > 0 &&
+      (areAllNonMinesRevealed() || allMinesAreFlagged())
+    ) {
+      setHasWon(true);
+    }
+  }, [gameField]);
   return (
     <React.Fragment>
       <GameBoardView
@@ -276,6 +356,7 @@ const GameBoard: React.FunctionComponent<{}> = () => {
         onFlagClick={handleFlagClick}
         onRefeshClick={handleRefreshClick}
         onRevealClick={handleRevealClick}
+        onRevealedDoubleClick={handleRevealedDoubleClick}
         flagsRemaining={flagsRemaining}
         hasLost={hasLost}
         hasWon={hasWon}
