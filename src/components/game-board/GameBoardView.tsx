@@ -74,7 +74,11 @@ const GameBoardView: React.FunctionComponent<IGameBoardViewProps> = ({
       </div>
       {gameField.map((row, rowIndex) => {
         return (
-          <div className="game-board-row" key={rowIndex}>
+          <div
+            className="game-board-row"
+            key={rowIndex}
+            data-difficulty={difficulty}
+          >
             {row.map((square, columnIndex) => (
               <MineSquare
                 key={`${rowIndex}-${columnIndex}`}
