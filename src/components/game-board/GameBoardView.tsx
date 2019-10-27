@@ -12,6 +12,8 @@ interface IGameBoardViewProps {
   gameField: IMineSquare[][];
   onRevealClick: (row: number, column: number) => () => void;
   onFlagClick: (row: number, column: number) => () => void;
+  hasLost: boolean;
+  hasWon: boolean;
 }
 
 const GameBoardView: React.FunctionComponent<IGameBoardViewProps> = ({
@@ -19,10 +21,18 @@ const GameBoardView: React.FunctionComponent<IGameBoardViewProps> = ({
   flagsRemaining,
   gameField,
   onRevealClick,
-  onFlagClick
+  onFlagClick,
+  hasLost,
+  hasWon
 }) => {
   return (
     <div className="game-board">
+      {hasLost && (
+        <h1 className="game-board-message game-board-message-lost">You Lose</h1>
+      )}
+      {hasWon && (
+        <h1 className="game-board-message game-board-message-won">You Win</h1>
+      )}
       <div className="game-board-controls">
         <div className="game-board-controls-refresh">
           <FontAwesomeIcon icon={faRedo} onClick={onRefeshClick} />

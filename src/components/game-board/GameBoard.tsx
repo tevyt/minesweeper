@@ -170,6 +170,21 @@ const GameBoard: React.FunctionComponent<{}> = () => {
     return newGrid.map(row => row.slice());
   };
 
+  const [hasLost, setHasLost] = React.useState(false);
+  const [hasWon, setHasWon] = React.useState(false);
+
+  const allMinesAreFlagged = () => {
+    const squares = gameField.flat();
+    const mineSquares = squares.filter(square => square.isMine);
+    return mineSquares.every(square => square.isFlagged);
+  };
+  const areAllNonMinesRevealed = () => {
+    const squares = gameField.flat();
+    const nonMineSquares = squares.filter(square => !square.isMine);
+
+    return nonMineSquares.every(square => square.isRevealed);
+  };
+
   const reveal = (
     grid: IMineSquare[][],
     row: number,
@@ -183,10 +198,15 @@ const GameBoard: React.FunctionComponent<{}> = () => {
     const newGrid = grid.map(row => row.slice());
 
     if (grid[row][column].isMine) {
+      setHasLost(true);
       return newGrid;
     }
 
-    //Recursively reveal adjacent
+    if (areAllNonMinesRevealed()) {
+      setHasWon(true);
+      return newGrid;
+    }
+
     if (grid[row][column].value === 0) {
       return revealAdjacentCells(newGrid, row, column);
     }
@@ -195,13 +215,15 @@ const GameBoard: React.FunctionComponent<{}> = () => {
   };
   const handleRevealClick = (row: number, column: number) => {
     return () => {
+      if (hasWon || hasLost) {
+        return;
+      }
       if (
         gameField[row][column].isRevealed ||
         gameField[row][column].isFlagged
       ) {
         return;
       } else {
-        //Mutation won't cause rerenders. Have to set a newField object.
         const newField = reveal(gameField, row, column);
         setGameField(newField);
       }
@@ -212,9 +234,13 @@ const GameBoard: React.FunctionComponent<{}> = () => {
 
   const handleFlagClick = (row: number, column: number) => {
     return () => {
+      if (hasWon || hasLost) {
+        return;
+      }
       if (gameField[row][column].isRevealed) {
         return;
       }
+
       if (gameField[row][column].isFlagged) {
         gameField[row][column].isFlagged = false;
         setFlagsRemaining(flagsRemaining + 1);
@@ -227,6 +253,10 @@ const GameBoard: React.FunctionComponent<{}> = () => {
       }
       const newField = gameField.map(row => row.slice());
       setGameField(newField);
+
+      if (allMinesAreFlagged()) {
+        setHasWon(true);
+      }
     };
   };
 
@@ -235,6 +265,8 @@ const GameBoard: React.FunctionComponent<{}> = () => {
       prepareGame(NUMBER_OF_ROWS, NUMBER_OF_COLUMNS, NUMBER_OF_MINES)
     );
     setFlagsRemaining(NUMBER_OF_MINES);
+    setHasLost(false);
+    setHasWon(false);
   };
 
   return (
@@ -245,6 +277,8 @@ const GameBoard: React.FunctionComponent<{}> = () => {
         onRefeshClick={handleRefreshClick}
         onRevealClick={handleRevealClick}
         flagsRemaining={flagsRemaining}
+        hasLost={hasLost}
+        hasWon={hasWon}
       />
     </React.Fragment>
   );

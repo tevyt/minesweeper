@@ -1,12 +1,22 @@
 .game-board {
+  $primary: #18624a;
   &-controls {
-    background-color: #18624a;
+    background-color: $primary;
     border: 1px solid black;
     padding: 10px;
     display: flex;
     justify-content: space-between;
     &-refresh {
       cursor: pointer;
+    }
+  }
+  &-message {
+    text-align: center;
+    &-lost {
+      color: red;
+    }
+    &-won {
+      color: $primary;
     }
   }
   &-row {
