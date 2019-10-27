@@ -24,3 +24,5 @@ To run in development.
 2.  run `npm install`
 3.  run `npm start`
 4.  Application will be served from localhost:3000
+
+A live demo is available [here](https://minesweeper.travisalexandersmith.me).
