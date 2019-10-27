@@ -6,6 +6,9 @@
     padding: 48px 0 12px 0;
     width: 80%;
     margin: auto;
+    @media screen and (max-width: 414px) {
+      padding: 10px 0 12px 0;
+    }
   }
   &-body {
     display: flex;

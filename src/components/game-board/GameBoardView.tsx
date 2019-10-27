@@ -15,6 +15,7 @@ interface IGameBoardViewProps {
   onRevealedDoubleClick: (row: number, column: number) => () => void;
   hasLost: boolean;
   hasWon: boolean;
+  time: number;
 }
 
 const GameBoardView: React.FunctionComponent<IGameBoardViewProps> = ({
@@ -25,7 +26,8 @@ const GameBoardView: React.FunctionComponent<IGameBoardViewProps> = ({
   onFlagClick,
   onRevealedDoubleClick,
   hasLost,
-  hasWon
+  hasWon,
+  time
 }) => {
   return (
     <div className="game-board">
@@ -39,6 +41,7 @@ const GameBoardView: React.FunctionComponent<IGameBoardViewProps> = ({
         <div className="game-board-controls-refresh">
           <FontAwesomeIcon icon={faRedo} onClick={onRefeshClick} />
         </div>
+        <div className="game-board-controls-time">{time}</div>
         <div className="game-board-controls-flag">
           <FontAwesomeIcon icon={faFlag} />
           <span>{flagsRemaining}</span>

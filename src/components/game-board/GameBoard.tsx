@@ -169,6 +169,7 @@ const GameBoard: React.FunctionComponent<{}> = () => {
 
   const [hasLost, setHasLost] = React.useState(false);
   const [hasWon, setHasWon] = React.useState(false);
+  const [time, setTime] = React.useState(0);
 
   const reveal = (
     grid: IMineSquare[][],
@@ -321,6 +322,7 @@ const GameBoard: React.FunctionComponent<{}> = () => {
   };
 
   const handleRefreshClick = () => {
+    setTime(0);
     setGameField(
       prepareGame(NUMBER_OF_ROWS, NUMBER_OF_COLUMNS, NUMBER_OF_MINES)
     );
@@ -349,6 +351,22 @@ const GameBoard: React.FunctionComponent<{}> = () => {
       setHasWon(true);
     }
   }, [gameField]);
+
+  React.useEffect(() => {
+    let timerId: NodeJS.Timeout | null = null;
+    timerId = setInterval(() => {
+      setTime(time + 1);
+    }, 1000);
+    if (hasWon || hasLost) {
+      clearInterval(timerId);
+    }
+    return () => {
+      if (timerId) {
+        clearInterval(timerId);
+      }
+    };
+  }, [hasWon, hasLost, time]);
+
   return (
     <React.Fragment>
       <GameBoardView
@@ -360,6 +378,7 @@ const GameBoard: React.FunctionComponent<{}> = () => {
         flagsRemaining={flagsRemaining}
         hasLost={hasLost}
         hasWon={hasWon}
+        time={time}
       />
     </React.Fragment>
   );
