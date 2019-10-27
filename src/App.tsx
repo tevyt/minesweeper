@@ -1,12 +1,20 @@
 import React from "react";
 import GameBoard from "./components/game-board/GameBoard";
 
+import symbol from "./symbol.png";
 import "./App.scss";
 
 const App: React.FunctionComponent<{}> = () => {
   return (
     <div className="app">
-      <GameBoard />
+      <div className="app-header">
+        <a href="https://travisalexandersmith.me">
+          <img src={symbol} />
+        </a>
+      </div>
+      <div className="app-body">
+        <GameBoard />
+      </div>
     </div>
   );
 };

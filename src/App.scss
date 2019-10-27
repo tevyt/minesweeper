@@ -1,7 +1,15 @@
 .app {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100vh;
   background-color: black;
+  &-header {
+    padding: 48px 0 12px 0;
+    width: 80%;
+    margin: auto;
+  }
+  &-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+  }
 }
