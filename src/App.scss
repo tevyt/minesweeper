@@ -1,19 +1,23 @@
 .app {
   font-family: "Jura", sans-serif;
-  height: 100vh;
+  height: 100%;
   background-color: black;
   &-header {
     padding: 48px 0 12px 0;
     width: 80%;
     margin: auto;
     @media screen and (max-width: 414px) {
-      padding: 10px 0 12px 0;
+      display: none;
     }
   }
   &-body {
+    @media screen and (max-width: 414px) {
+      padding-top: 25px;
+    }
     display: flex;
     justify-content: center;
     align-items: center;
     flex: 1;
+    background-color: black;
   }
 }

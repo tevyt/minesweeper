@@ -1,5 +1,10 @@
 .game-board {
   $primary: #18624a;
+  &-mobile-prompt {
+    text-align: right;
+    color: white;
+    font-size: 0.8em;
+  }
   &-controls {
     background-color: $primary;
     border: 1px solid black;

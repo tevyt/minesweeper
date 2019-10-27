@@ -18,6 +18,12 @@ interface IGameBoardViewProps {
   time: number;
 }
 
+const isMobile = () => {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  );
+};
+
 const GameBoardView: React.FunctionComponent<IGameBoardViewProps> = ({
   onRefeshClick,
   flagsRemaining,
@@ -36,6 +42,11 @@ const GameBoardView: React.FunctionComponent<IGameBoardViewProps> = ({
       )}
       {hasWon && (
         <h1 className="game-board-message game-board-message-won">You Win</h1>
+      )}
+      {isMobile() && (
+        <div className="game-board-mobile-prompt">
+          Press and hold place a flag
+        </div>
       )}
       <div className="game-board-controls">
         <div className="game-board-controls-refresh">
